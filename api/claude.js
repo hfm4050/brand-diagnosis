@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: { message: "ANTHROPIC_API_KEY 환경변수가 없습니다" } });
   try {
     const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
-    body.max_tokens = Math.min(body.max_tokens || 1000, 2000);
+    body.max_tokens = Math.min(body.max_tokens || 4000, 8000);
     const r = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
