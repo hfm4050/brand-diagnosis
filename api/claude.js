@@ -1,5 +1,6 @@
 // Vercel Serverless Function — Anthropic API 프록시
-// 환경변수 ANTHROPIC_API_KEY 에 키를 넣으면 사용자에게 키를 받지 않아도 됩니다.
+// stream:true 요청은 SSE로 그대로 흘려보내고(504 방지), 일반 요청은 JSON으로 응답합니다.
+export const config = { api: { bodyParser: { sizeLimit: "30mb" }, responseLimit: false } };
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -9,15 +10,38 @@ export default async function handler(req, res) {
   if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: { message: "ANTHROPIC_API_KEY 환경변수가 없습니다" } });
   try {
     const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
-    body.max_tokens = Math.min(body.max_tokens || 4000, 8000);
+    body.max_tokens = Math.min(body.max_tokens || 3000, 8000);
+    const wantStream = body.stream === true;
     const r = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
       body: JSON.stringify(body),
     });
-    const data = await r.json();
-    res.status(r.status).json(data);
+    if (!wantStream) {
+      const t = await r.text();
+      res.status(r.status).setHeader("Content-Type", "application/json");
+      return res.end(t);
+    }
+    if (!r.ok) {
+      const t = await r.text();
+      res.status(r.status).setHeader("Content-Type", "application/json");
+      return res.end(t);
+    }
+    res.status(200);
+    res.setHeader("Content-Type", "text/event-stream; charset=utf-8");
+    res.setHeader("Cache-Control", "no-cache, no-transform");
+    res.setHeader("X-Accel-Buffering", "no");
+    if (res.flushHeaders) res.flushHeaders();
+    const reader = r.body.getReader();
+    const dec = new TextDecoder();
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      res.write(dec.decode(value, { stream: true }));
+    }
+    res.end();
   } catch (e) {
-    res.status(500).json({ error: { message: e.message } });
+    if (!res.headersSent) res.status(500).json({ error: { message: e.message } });
+    else res.end();
   }
 }
