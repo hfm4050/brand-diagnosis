@@ -1,0 +1,4 @@
+node_modules/
+threads/output/
+threads/input.md
+.env
