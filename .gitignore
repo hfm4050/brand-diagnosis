@@ -15,3 +15,6 @@ media/exports/*
 *.mp3
 *.wav
 *.m4a
+
+__pycache__/
+*.pyc
