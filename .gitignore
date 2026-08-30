@@ -1,0 +1,17 @@
+node_modules/
+.vercel/
+.env
+.env.local
+
+# 미디어 작업 산출물 — 원본/프레임/오디오는 저장소에 커밋하지 않는다
+media/inbox/*
+media/frames/*
+media/exports/*
+!media/*/.gitkeep
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.mp3
+*.wav
+*.m4a
