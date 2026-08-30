@@ -18,3 +18,7 @@ media/exports/*
 
 __pycache__/
 *.pyc
+
+# CG 작업: 캡처 프레임/노드 모듈
+media/cg/node_modules/
+media/cg/frames/
