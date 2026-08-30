@@ -4,7 +4,6 @@
 
 | 스킬 | 저장소 | 커밋 | 설치일 |
 |---|---|---|---|
-| `watch` | `bradautomates/claude-video` | `v0.2.0` | 2026-08-30 |
 | `karpathy-guidelines` | `multica-ai/andrej-karpathy-skills` | `2c60614` | 2026-08-30 |
 | `brainstorming` | `obra/superpowers` | `b36e082` | 2026-08-30 |
 | `dispatching-parallel-agents` | `obra/superpowers` | `b36e082` | 2026-08-30 |
@@ -47,3 +46,4 @@
 | `session-history` | `rohitg00/agentmemory` | `e04ba88` | 2026-08-30 |
 | `write-agentmemory-skill` | `rohitg00/agentmemory` | `e04ba88` | 2026-08-30 |
 | `skill-creator` | `anthropics/skills` | `3b3fad9` | 2026-08-30 |
+| `watch` | `bradautomates/claude-video` | `83da59f` | 2026-08-30 |
