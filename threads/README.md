@@ -109,16 +109,32 @@ push 하면 Vercel이 자동 재배포되고, 그 다음부터는 아무것도 �
 큐가 빌 때까지 매일 1개씩 올라갑니다. 큐가 비면 아무 일도 하지 않으니
 가끔 카피를 새로 생성해 큐를 채우고 push 하면 됩니다.
 
+### 발행 스케줄 (하루 3회)
+
+| 회차 | 한국시간 | 실행 주체 | 설정 위치 |
+|---|---|---|---|
+| 1회차 | 08:00 | Vercel 크론 | `vercel.json` → `crons` (`0 23 * * *`, UTC) |
+| 2회차 | 12:30 | GitHub Actions | `.github/workflows/auto-post.yml` (`30 3 * * *`, UTC) |
+| 3회차 | 19:00 | GitHub Actions | 같은 파일 (`0 10 * * *`, UTC) |
+
+Vercel 무료(Hobby) 플랜은 크론이 하루 1회까지라, 나머지 회차는 GitHub Actions가
+같은 발행 주소를 호출합니다. 하루 2개만 원하면 워크플로 파일에서 schedule 한 줄을 지우세요.
+두 스케줄 모두 지정 시각보다 몇 분~수십 분 늦게 실행될 수 있습니다(발행 자체에는 문제 없음).
+
 ### 최초 설정 (1회)
 
-1. Vercel 프로젝트 → Settings → Environment Variables:
+1. **Vercel** 프로젝트 → Settings → Environment Variables:
    - `THREADS_ACCESS_TOKEN` = 장기 액세스 토큰 (아래 "게시 준비" 참고)
    - `CRON_SECRET` = 아무 긴 무작위 문자열 (외부인이 발행 주소를 호출하지 못하게 차단 — 꼭 설정하세요)
-2. 발행 시각은 `vercel.json` 의 크론 스케줄로 조정 (UTC 기준):
-   - 현재 `0 23 * * *` = 매일 한국시간 오전 8시. 예: 한국 12시로 바꾸려면 `0 3 * * *`
-   - Vercel 무료(Hobby) 플랜은 하루 1회 크론까지 지원하며, 실행 시각이 지정 시각에서 최대 1시간 늦을 수 있습니다.
+2. **GitHub** 저장소 → Settings → Secrets and variables → Actions:
+   - Variables 탭: `POST_URL` = `https://프로젝트명.vercel.app/api/post-thread`
+   - Secrets 탭: `CRON_SECRET` = Vercel에 넣은 것과 같은 값
 3. 배포 후 미리보기로 확인: `https://프로젝트명.vercel.app/api/post-thread?check=1`
    (CRON_SECRET을 설정했다면 `Authorization: Bearer <CRON_SECRET>` 헤더 필요)
+   또는 GitHub → Actions 탭 → threads-auto-post → Run workflow 로 수동 발행 테스트
+
+하루 3개 × 60일이면 최대 180건이 필요합니다. 큐가 비면 그날은 그냥 건너뛰니
+한 번에 다 채울 필요는 없고, 주기적으로 카피를 생성해 큐를 채우고 push 하면 됩니다.
 
 주의: 장기 토큰은 60일 만료라, 만료 전에 갱신해서 Vercel 환경변수를 교체해야 합니다 (아래 갱신 curl 참고).
 큐에 담긴 글은 검토 없이 그대로 올라가니, `--list` 로 한 번 확인하고 push 하세요.

@@ -1,0 +1,35 @@
+# 스레드 자동 발행 — 하루 2·3회차 (1회차는 Vercel 크론이 담당)
+#
+# 필요한 설정 (GitHub 저장소 → Settings → Secrets and variables → Actions):
+#   Variables:  POST_URL    = https://프로젝트명.vercel.app/api/post-thread
+#   Secrets:    CRON_SECRET = Vercel 환경변수와 같은 값
+#
+# 시각은 UTC 기준입니다. GitHub 스케줄은 지정 시각보다 몇 분~수십 분 늦게 실행될 수 있습니다.
+# 3회차가 필요 없으면 schedule 항목 하나를 지우면 됩니다.
+
+name: threads-auto-post
+
+on:
+  schedule:
+    - cron: '30 3 * * *'   # 한국시간 12:30 (2회차)
+    - cron: '0 10 * * *'   # 한국시간 19:00 (3회차)
+  workflow_dispatch:        # Actions 탭에서 수동 실행도 가능
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 발행 엔드포인트 호출
+        env:
+          POST_URL: ${{ vars.POST_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$POST_URL" ]; then
+            echo "::error::저장소 Variables 에 POST_URL 을 설정하세요 (예: https://프로젝트명.vercel.app/api/post-thread)"
+            exit 1
+          fi
+          resp=$(curl -sS -H "Authorization: Bearer $CRON_SECRET" "$POST_URL")
+          echo "$resp"
+          case "$resp" in
+            *'"error"'*) echo "::error::발행 실패 — 위 응답을 확인하세요"; exit 1 ;;
+          esac
