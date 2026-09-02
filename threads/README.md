@@ -6,9 +6,10 @@
 정리된 결과물은 노션의 **[열정덕 > 스레드 (리포스트 → 열정덕 카피)]** 페이지에 쌓습니다.
 
 ```
-1단계 읽기   scrape-reposts.mjs   스레드 리포스트 탭 수집 → output/reposts.json/.md
-2단계 쓰기   generate-copy.mjs    Claude로 분류 + 열정덕 카피 2버전 생성 → output/copies.json/.md
-3단계 게시   post-thread.mjs      고른 카피를 스레드 공식 API로 게시
+1단계 읽기      scrape-reposts.mjs   스레드 리포스트 탭 수집 → output/reposts.json/.md
+2단계 쓰기      generate-copy.mjs    Claude로 분류 + 열정덕 카피 2버전 생성 → output/copies.json/.md
+3단계 게시      post-thread.mjs      고른 카피를 즉시 게시 (수동)
+   또는 자동    build-queue.mjs      카피를 queue.json 에 담아 push → Vercel 크론이 매일 1개씩 발행
 ```
 
 빠른 실행 (프로젝트 루트에서):
@@ -88,6 +89,39 @@ node threads/post-thread.mjs --text "직접 쓴 글"      # 임의 텍스트 게
 ```bash
 curl "https://graph.threads.net/refresh_access_token?grant_type=th_refresh_token&access_token=<현재토큰>"
 ```
+
+## 자동 발행 (Vercel 크론 — 컴퓨터 꺼져 있어도 동작)
+
+`api/post-thread.js` 가 매일 한 번 Vercel 크론으로 실행되어, `threads/queue.json` 대기열에서
+**아직 계정에 올라가지 않은 첫 글**을 찾아 발행합니다. 이미 올라갔는지는 스레드 API로
+내 최근 글을 읽어 본문을 비교하므로, 하루 실패해도 다음 날 같은 글을 다시 시도합니다.
+
+### 흐름
+
+```bash
+node threads/generate-copy.mjs                       # 카피 생성 (2단계)
+node threads/build-queue.mjs --add 1:v1 --add 3:v2   # 마음에 드는 카피를 큐에 담기
+node threads/build-queue.mjs --list                  # 큐 확인
+git add threads/queue.json && git commit -m "발행 큐 갱신" && git push
+```
+
+push 하면 Vercel이 자동 재배포되고, 그 다음부터는 아무것도 하지 않아도
+큐가 빌 때까지 매일 1개씩 올라갑니다. 큐가 비면 아무 일도 하지 않으니
+가끔 카피를 새로 생성해 큐를 채우고 push 하면 됩니다.
+
+### 최초 설정 (1회)
+
+1. Vercel 프로젝트 → Settings → Environment Variables:
+   - `THREADS_ACCESS_TOKEN` = 장기 액세스 토큰 (아래 "게시 준비" 참고)
+   - `CRON_SECRET` = 아무 긴 무작위 문자열 (외부인이 발행 주소를 호출하지 못하게 차단 — 꼭 설정하세요)
+2. 발행 시각은 `vercel.json` 의 크론 스케줄로 조정 (UTC 기준):
+   - 현재 `0 23 * * *` = 매일 한국시간 오전 8시. 예: 한국 12시로 바꾸려면 `0 3 * * *`
+   - Vercel 무료(Hobby) 플랜은 하루 1회 크론까지 지원하며, 실행 시각이 지정 시각에서 최대 1시간 늦을 수 있습니다.
+3. 배포 후 미리보기로 확인: `https://프로젝트명.vercel.app/api/post-thread?check=1`
+   (CRON_SECRET을 설정했다면 `Authorization: Bearer <CRON_SECRET>` 헤더 필요)
+
+주의: 장기 토큰은 60일 만료라, 만료 전에 갱신해서 Vercel 환경변수를 교체해야 합니다 (아래 갱신 curl 참고).
+큐에 담긴 글은 검토 없이 그대로 올라가니, `--list` 로 한 번 확인하고 push 하세요.
 
 ## 카테고리 기준
 

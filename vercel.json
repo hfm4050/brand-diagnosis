@@ -1,1 +1,10 @@
-{ "functions": { "api/claude.js": { "maxDuration": 60 }, "api/transcribe.js": { "maxDuration": 60 } } }
+{
+  "functions": {
+    "api/claude.js": { "maxDuration": 60 },
+    "api/transcribe.js": { "maxDuration": 60 },
+    "api/post-thread.js": { "maxDuration": 60, "includeFiles": "threads/queue.json" }
+  },
+  "crons": [
+    { "path": "/api/post-thread", "schedule": "0 23 * * *" }
+  ]
+}

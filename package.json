@@ -6,6 +6,7 @@
     "threads:scrape": "node threads/scrape-reposts.mjs --user duckpd7 --min-likes 100",
     "threads:generate": "node threads/generate-copy.mjs",
     "threads:list": "node threads/post-thread.mjs --list",
+    "threads:queue": "node threads/build-queue.mjs",
     "threads:post": "node threads/post-thread.mjs"
   }
 }
