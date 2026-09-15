@@ -1,0 +1,24 @@
+{
+  "name": "brand-diagnosis-video",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Remotion project for brand-diagnosis videos",
+  "scripts": {
+    "dev": "remotion studio",
+    "render": "remotion render MyComp out/video.mp4",
+    "still": "remotion still MyComp out/still.png",
+    "upgrade": "remotion upgrade"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.525",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "4.0.525",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.8.2"
+  }
+}

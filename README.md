@@ -36,3 +36,10 @@ Claude Code가 `vercel` CLI 설치와 배포를 도와줍니다.
 npx esbuild app.jsx --loader:.jsx=jsx --outfile=app.js --format=iife --minify
 ```
 (Claude에게 "문항 바꿔서 다시 빌드해줘"라고 요청하면 됩니다.)
+
+## 영상 만들기 (Remotion)
+`remotion/` 폴더에 [Remotion](https://www.remotion.dev) 프로젝트가 들어 있습니다. React 코드로 홍보 영상을 렌더링할 때 씁니다.
+```
+cd remotion && npm install && npm run dev
+```
+자세한 사용법은 `remotion/README.md` 참고. (Remotion은 직원 4명 이상 회사면 유료 라이선스가 필요합니다.)
