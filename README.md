@@ -38,8 +38,11 @@ npx esbuild app.jsx --loader:.jsx=jsx --outfile=app.js --format=iife --minify
 (Claude에게 "문항 바꿔서 다시 빌드해줘"라고 요청하면 됩니다.)
 
 ## 영상 만들기 (Remotion)
-`remotion/` 폴더에 [Remotion](https://www.remotion.dev) 프로젝트가 들어 있습니다. React 코드로 홍보 영상을 렌더링할 때 씁니다.
+`remotion/` 폴더에 [Remotion](https://www.remotion.dev) 영상 프로젝트가 들어 있습니다.
+현재 「티나는 성형 vs 티 안 나는 성형」 키네틱 타이포그래피 영상(16:9, 1920×1080, 약 59초)이 들어 있습니다.
 ```
-cd remotion && npm install && npm run dev
+cd remotion && npm install && npm run dev      # 스튜디오에서 미리보기
+cd remotion && npm run render                  # out/ti-surgery.mp4
 ```
+문구만 고치려면 `remotion/src/ti/content.ts` 를 보면 됩니다.
 자세한 사용법은 `remotion/README.md` 참고. (Remotion은 직원 4명 이상 회사면 유료 라이선스가 필요합니다.)

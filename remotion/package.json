@@ -4,9 +4,13 @@
   "private": true,
   "description": "Remotion project for brand-diagnosis videos",
   "scripts": {
+    "fonts": "node scripts/fetch-fonts.mjs",
+    "predev": "npm run fonts",
     "dev": "remotion studio",
-    "render": "remotion render MyComp out/video.mp4",
-    "still": "remotion still MyComp out/still.png",
+    "prerender": "npm run fonts",
+    "render": "remotion render TiSurgery out/ti-surgery.mp4",
+    "prestill": "npm run fonts",
+    "still": "remotion still TiSurgery out/still.png",
     "upgrade": "remotion upgrade"
   },
   "dependencies": {
