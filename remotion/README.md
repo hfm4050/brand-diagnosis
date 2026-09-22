@@ -87,3 +87,38 @@ REMOTION_BROWSER_EXECUTABLE=/path/to/chrome npm run render
 Remotion은 소스가 공개돼 있지만 무료는 아닙니다.
 개인과 직원 3명 이하 회사는 무료, **직원 4명 이상 회사는 유료 기업 라이선스**가 필요합니다.
 자세한 내용: https://www.remotion.dev/license
+
+---
+
+# PhotoShot — 사진 한 장에 카메라와 필름 입히기
+
+`PhotoShot` 컴포지션은 **사진 한 장을 8초 시네마틱 컷으로** 만듭니다. 1920×1080, 30fps.
+
+**할 수 있는 것** — 느린 푸시인, 창측 광선, 빛줄기 속 먼지, 웜 빈티지 그레이딩,
+35mm 그레인, 게이트 위브, 비네팅, 헤드/테일 페이드.
+
+**할 수 없는 것** — 인물의 연기. Remotion은 생성 모델이 아니라 렌더러입니다.
+표정이 변하거나 손이 움직이는 건 만들 수 없습니다. 결과물은 **움직이는 사진**이지
+연기하는 사람이 아닙니다. 그건 영상 생성 모델(Veo, Seedance 등)의 영역입니다.
+
+## 쓰는 법
+
+1. 사진을 `public/shot/` 에 넣습니다. 예: `public/shot/photo.jpg`
+2. `npm run dev` → 스튜디오에서 `PhotoShot` 선택 → 오른쪽 패널에서 `src` 에
+   `shot/photo.jpg` 입력. 나머지 값도 그 자리에서 바로 돌려볼 수 있습니다.
+3. `npx remotion render PhotoShot out/shot.mp4 --props='{"src":"shot/photo.jpg"}'`
+
+`public/shot/` 은 `.gitignore` 대상입니다(사진은 저장소에 안 들어갑니다).
+
+## 파라미터
+
+| 이름 | 기본값 | 설명 |
+| --- | --- | --- |
+| `src` | `""` | `public/` 기준 사진 경로. 비우면 자리표시자 |
+| `pushIn` | `1.07` | 8초 동안의 총 확대량. 1.07 = 7% |
+| `beamFrom` | `left` | 창광선이 들어오는 쪽 |
+| `warmth` | `0.85` | 웜 빈티지 그레이딩 강도 |
+| `grain` | `0.55` | 35mm 그레인 강도 |
+| `motes` | `54` | 빛줄기 속 먼지 개수 |
+
+푸시인은 의도적으로 **선형**입니다. 8초 길이에서는 이징을 걸면 중간에 멈칫하는 게 보입니다.

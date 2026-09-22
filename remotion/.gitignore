@@ -1,4 +1,5 @@
 node_modules
 out
 public/fonts
+public/shot
 .env
