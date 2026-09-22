@@ -22,6 +22,8 @@ export const photoShotSchema = z.object({
   pushIn: z.number().min(1).max(1.4),
   /** 창광선이 들어오는 쪽 */
   beamFrom: z.enum(["left", "right"]),
+  /** 창광선 세기. 0이면 끔 — 밝은 그래픽·스크린샷에는 0이 맞다. */
+  beam: z.number().min(0).max(1),
   /** 웜 빈티지 그레이딩 강도 */
   warmth: z.number().min(0).max(1),
   /** 35mm 그레인 강도 */
@@ -43,6 +45,7 @@ export const PhotoShot: React.FC<PhotoShotProps> = ({
   src,
   pushIn,
   beamFrom,
+  beam,
   warmth,
   grain,
   motes,
@@ -90,7 +93,7 @@ export const PhotoShot: React.FC<PhotoShotProps> = ({
           style={{
             background: `linear-gradient(${beamAngle}, rgba(255,214,150,0.30) 0%, rgba(255,198,126,0.10) 26%, rgba(0,0,0,0) 58%)`,
             mixBlendMode: "screen",
-            opacity: 0.85,
+            opacity: 0.85 * beam,
           }}
         />
 

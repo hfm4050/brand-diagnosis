@@ -29,6 +29,7 @@ export const RemotionRoot: React.FC = () => {
           src: "",
           pushIn: 1.07,
           beamFrom: "left" as const,
+          beam: 1,
           warmth: 0.85,
           grain: 0.55,
           motes: 54,
