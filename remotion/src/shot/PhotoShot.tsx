@@ -9,6 +9,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import { z } from "zod";
+import { Grain } from "../lib/film";
 
 const clamp = {
   extrapolateLeft: "clamp",
@@ -130,44 +131,6 @@ export const PhotoShot: React.FC<PhotoShotProps> = ({
         <Grain frame={frame} amount={grain} width={width} height={height} />
       </AbsoluteFill>
     </AbsoluteFill>
-  );
-};
-
-/** feTurbulence로 만든 필름 그레인. 프레임마다 시드를 바꿔 실제로 끓게 한다. */
-const Grain: React.FC<{
-  frame: number;
-  amount: number;
-  width: number;
-  height: number;
-}> = ({ frame, amount, width, height }) => {
-  if (amount <= 0) return null;
-  // 필터 id를 프레임마다 바꿔야 브라우저가 노이즈를 다시 계산한다.
-  const id = `grain-${frame}`;
-  return (
-    <svg
-      width={width}
-      height={height}
-      viewBox={`0 0 ${width} ${height}`}
-      style={{
-        position: "absolute",
-        inset: 0,
-        mixBlendMode: "overlay",
-        opacity: 0.4 * amount,
-        pointerEvents: "none",
-      }}
-    >
-      <filter id={id} x="0" y="0" width="100%" height="100%">
-        <feTurbulence
-          type="fractalNoise"
-          baseFrequency="0.85"
-          numOctaves={2}
-          seed={frame % 211}
-          stitchTiles="stitch"
-        />
-        <feColorMatrix type="saturate" values="0" />
-      </filter>
-      <rect width={width} height={height} filter={`url(#${id})`} />
-    </svg>
   );
 };
 

@@ -4,6 +4,7 @@ import { TiSurgery } from "./ti/TiSurgery";
 import { FPS, TOTAL } from "./ti/theme";
 import { PhotoShot, photoShotSchema } from "./shot/PhotoShot";
 import { StoryCard, storyCardSchema } from "./story/StoryCard";
+import { WeddingPhoto, weddingPhotoSchema } from "./wedding/WeddingPhoto";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -56,6 +57,23 @@ export const RemotionRoot: React.FC = () => {
             "저만 보이더라고요.",
           ],
           insertSrc: "",
+        }}
+      />
+
+      {/* 한 문장짜리 컷 — 사진 속에서 딸이 지워진다. */}
+      <Composition
+        id="WeddingPhoto"
+        component={WeddingPhoto}
+        durationInFrames={12 * FPS}
+        fps={FPS}
+        width={1920}
+        height={1080}
+        schema={weddingPhotoSchema}
+        defaultProps={{
+          line1: "결혼식 사진을 나중에 받아봤는데,",
+          line2: "우리 딸이 아니라",
+          pivot: "저만",
+          line3: " 보이더라고요.",
         }}
       />
     </>
