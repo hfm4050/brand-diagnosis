@@ -12,7 +12,8 @@ export type DayStep = {
 export type CareItem = { t: string; sub?: string };
 export type CarePhase = { when: string; items: CareItem[] };
 
-export const TITLE = "스타라인 4단계 시스템";
+export const BRAND = "스타라인성형외과";
+export const PROGRAM = "별빛 프로그램";
 export const SUBTITLE = "상담부터 6개월 사후 관리까지";
 
 export const DAY_STEPS: DayStep[] = [

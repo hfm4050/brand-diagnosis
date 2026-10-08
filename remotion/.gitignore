@@ -2,4 +2,5 @@ node_modules
 out
 public/fonts
 public/shot
+public/sfx
 .env

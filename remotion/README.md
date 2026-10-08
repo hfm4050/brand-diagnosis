@@ -212,3 +212,33 @@ npx remotion render WeddingPhoto out/cut.mp4 --props='{
 원뿔 하나로는 사람으로 읽히지 않아서 **어깨가 반드시 필요합니다.** 흐림은 8px 안팎이
 한계고, 그 이상 주면 머리가 몸에 먹혀 형체가 무너집니다. 얕은 심도로 찍힌 인물처럼
 실루엣만 남기는 게 목적이라 이목구비는 그리지 않습니다.
+
+---
+
+# StarlineSystem — 스타라인성형외과 "별빛 프로그램"
+
+4단계 시스템을 하나씩 보여주는 9.5초 영상입니다. 1920×1080, 30fps, 효과음 포함.
+
+```bash
+npm run render -- StarlineSystem out/starline.mp4   # 또는
+npx remotion render StarlineSystem out/starline.mp4
+```
+
+문구는 전부 `src/starline/content.ts` 에 있습니다.
+
+## 순서와 효과음
+
+제목 → STEP1 → STEP2 → STEP3 → 1~2일차 → 7~14일차 → 1개월차 → 3~6개월차
+
+각 박자에 효과음이 하나씩 작게 붙습니다(피크 약 -17 dBFS). 음은 펜타토닉으로
+한 칸씩 올라가서 쌓일수록 기대감이 같이 오릅니다. 박자 프레임은
+`StarlineSystem.tsx` 의 `BEATS`, 음량은 `SFX_VOLUME` 입니다.
+
+## 효과음
+
+`scripts/make-sfx.mjs` 가 직접 합성합니다 — 외부 음원이 없어 저작권 문제가 없고
+시드 고정이라 매번 같은 소리가 납니다. `npm run assets` (dev/render 전에 자동 실행)가
+폰트와 함께 `public/sfx/` 를 채웁니다.
+
+좌우 채널 어긋남(`DETUNE`)은 일부러 아주 작게 뒀습니다. 크게 주면 넓게 들리지만,
+휴대폰 스피커처럼 모노로 합칠 때 맥놀이가 생겨 여운이 출렁입니다.

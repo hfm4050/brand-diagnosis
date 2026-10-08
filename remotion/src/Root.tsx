@@ -5,7 +5,7 @@ import { FPS, TOTAL } from "./ti/theme";
 import { PhotoShot, photoShotSchema } from "./shot/PhotoShot";
 import { StoryCard, storyCardSchema } from "./story/StoryCard";
 import { WeddingPhoto, weddingPhotoSchema } from "./wedding/WeddingPhoto";
-import { StarlineSystem } from "./starline/StarlineSystem";
+import { STARLINE_DURATION, StarlineSystem } from "./starline/StarlineSystem";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -78,11 +78,11 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
 
-      {/* 스타라인 4단계 시스템 — 한 장짜리 + 5초 영상 */}
+      {/* 스타라인성형외과 "별빛 프로그램" — 하나씩 나오며 효과음, 9.5초 */}
       <Composition
         id="StarlineSystem"
         component={StarlineSystem}
-        durationInFrames={5 * FPS}
+        durationInFrames={STARLINE_DURATION}
         fps={FPS}
         width={1920}
         height={1080}

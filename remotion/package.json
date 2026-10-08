@@ -5,11 +5,13 @@
   "description": "Remotion project for brand-diagnosis videos",
   "scripts": {
     "fonts": "node scripts/fetch-fonts.mjs",
-    "predev": "npm run fonts",
+    "sfx": "node scripts/make-sfx.mjs",
+    "assets": "npm run fonts && npm run sfx",
+    "predev": "npm run assets",
     "dev": "remotion studio",
-    "prerender": "npm run fonts",
+    "prerender": "npm run assets",
     "render": "remotion render TiSurgery out/ti-surgery.mp4",
-    "prestill": "npm run fonts",
+    "prestill": "npm run assets",
     "still": "remotion still TiSurgery out/still.png",
     "upgrade": "remotion upgrade"
   },
