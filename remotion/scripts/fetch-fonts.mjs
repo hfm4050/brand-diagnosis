@@ -26,15 +26,28 @@ const GH = "https://raw.githubusercontent.com/google/fonts/main";
 const LEGACY_UA = "Mozilla/5.0 (Windows NT 6.1)";
 
 /** 한글 — 저장소 원본 TTF (음절 11,172자 전부 포함) */
-const HANGUL = {
-  family: "Nanum Myeongjo",
-  dir: "ofl/nanummyeongjo",
-  faces: [
-    { weight: "400", style: "normal", src: "NanumMyeongjo-Regular.ttf" },
-    { weight: "700", style: "normal", src: "NanumMyeongjo-Bold.ttf" },
-    { weight: "800", style: "normal", src: "NanumMyeongjo-ExtraBold.ttf" },
-  ],
-};
+const HANGUL = [
+  {
+    family: "Nanum Myeongjo",
+    dir: "ofl/nanummyeongjo",
+    faces: [
+      { weight: "400", style: "normal", src: "NanumMyeongjo-Regular.ttf" },
+      { weight: "700", style: "normal", src: "NanumMyeongjo-Bold.ttf" },
+      { weight: "800", style: "normal", src: "NanumMyeongjo-ExtraBold.ttf" },
+    ],
+  },
+  {
+    // 스타라인 카드용 볼드 고딕
+    family: "Gothic A1",
+    dir: "ofl/gothica1",
+    faces: [
+      { weight: "500", style: "normal", src: "GothicA1-Medium.ttf" },
+      { weight: "700", style: "normal", src: "GothicA1-Bold.ttf" },
+      { weight: "800", style: "normal", src: "GothicA1-ExtraBold.ttf" },
+      { weight: "900", style: "normal", src: "GothicA1-Black.ttf" },
+    ],
+  },
+];
 
 /** 라틴 — 키커와 versus에만 쓰므로 구형 엔드포인트로 충분하다. */
 const LATIN = { family: "Bodoni Moda", variants: ["400", "600", "400italic"] };
@@ -95,15 +108,17 @@ const main = async () => {
   await mkdir(FONT_DIR, { recursive: true });
   const entries = [];
 
-  for (const face of HANGUL.faces) {
-    const name = `${slug(HANGUL.family)}-${face.weight}.ttf`;
-    await save(name, `${GH}/${HANGUL.dir}/${face.src}`, MIN_HANGUL_GLYPHS);
-    entries.push({
-      family: HANGUL.family,
-      weight: face.weight,
-      style: face.style,
-      file: `fonts/${name}`,
-    });
+  for (const fam of HANGUL) {
+    for (const face of fam.faces) {
+      const name = `${slug(fam.family)}-${face.weight}.ttf`;
+      await save(name, `${GH}/${fam.dir}/${face.src}`, MIN_HANGUL_GLYPHS);
+      entries.push({
+        family: fam.family,
+        weight: face.weight,
+        style: face.style,
+        file: `fonts/${name}`,
+      });
+    }
   }
 
   const url =

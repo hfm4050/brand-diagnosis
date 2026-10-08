@@ -26,6 +26,30 @@ export const FONT_FILES: FontFile[] = [
     file: "fonts/NanumMyeongjo-800.ttf"
   },
   {
+    family: "Gothic A1",
+    weight: "500",
+    style: "normal",
+    file: "fonts/GothicA1-500.ttf"
+  },
+  {
+    family: "Gothic A1",
+    weight: "700",
+    style: "normal",
+    file: "fonts/GothicA1-700.ttf"
+  },
+  {
+    family: "Gothic A1",
+    weight: "800",
+    style: "normal",
+    file: "fonts/GothicA1-800.ttf"
+  },
+  {
+    family: "Gothic A1",
+    weight: "900",
+    style: "normal",
+    file: "fonts/GothicA1-900.ttf"
+  },
+  {
     family: "Bodoni Moda",
     weight: "400",
     style: "italic",

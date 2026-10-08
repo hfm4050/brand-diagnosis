@@ -10,6 +10,8 @@ import { FONT_FILES } from "./font-manifest";
 export const KR = "'Nanum Myeongjo', 'Apple SD Gothic Neo', serif";
 /** 라틴 — Bodoni Moda. 디돈. 키커와 versus에만 쓴다. */
 export const LATIN = "'Bodoni Moda', Georgia, serif";
+/** 볼드 고딕 — Gothic A1. 스타라인 카드처럼 정보가 많은 화면용. */
+export const GOTHIC = "'Gothic A1', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
 
 // public/fonts/ 의 파일만 쓴다. 렌더 중 네트워크를 타지 않으므로 어느 환경에서
 // 돌려도 같은 서체가 나온다. 파일은 `npm run fonts` 가 채운다.
