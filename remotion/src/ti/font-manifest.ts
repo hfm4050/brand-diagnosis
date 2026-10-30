@@ -66,5 +66,11 @@ export const FONT_FILES: FontFile[] = [
     weight: "600",
     style: "normal",
     file: "fonts/BodoniModa-600.ttf"
+  },
+  {
+    family: "Creepster",
+    weight: "400",
+    style: "normal",
+    file: "fonts/Creepster-400.ttf"
   }
 ];

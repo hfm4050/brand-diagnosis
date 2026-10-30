@@ -49,8 +49,13 @@ const HANGUL = [
   },
 ];
 
-/** 라틴 — 키커와 versus에만 쓰므로 구형 엔드포인트로 충분하다. */
-const LATIN = { family: "Bodoni Moda", variants: ["400", "600", "400italic"] };
+/** 라틴 전용 서체 — 구형 엔드포인트로 충분하다. */
+const LATIN = [
+  // 키커와 versus
+  { family: "Bodoni Moda", variants: ["400", "600", "400italic"] },
+  // 호러 테마파크 네온 간판
+  { family: "Creepster", variants: ["400"] },
+];
 
 /** 한글 폰트가 라틴만 담긴 파일로 바뀌는 사고를 막는 최소 검사. */
 const MIN_HANGUL_GLYPHS = 10000;
@@ -121,26 +126,25 @@ const main = async () => {
     }
   }
 
-  const url =
-    `https://fonts.googleapis.com/css?family=` +
-    `${encodeURIComponent(LATIN.family).replace(/%20/g, "+")}:${LATIN.variants.join(",")}`;
-  const css = await (await get(url, LATIN.family)).text();
-
   const re =
     /@font-face\s*\{[^}]*?font-style:\s*(\w+);[^}]*?font-weight:\s*(\d+);[^}]*?src:\s*url\((https:[^)]+\.ttf)\)/g;
-  const faces = [...css.matchAll(re)];
-  if (faces.length !== LATIN.variants.length) {
-    throw new Error(
-      `${LATIN.family}: ${LATIN.variants.length}개를 기대했는데 ${faces.length}개를 찾았습니다.`
-    );
-  }
 
-  for (const [, style, weight, src] of faces) {
-    const name = `${slug(LATIN.family)}-${weight}${
-      style === "italic" ? "-italic" : ""
-    }.ttf`;
-    await save(name, src, 0);
-    entries.push({ family: LATIN.family, weight, style, file: `fonts/${name}` });
+  for (const fam of LATIN) {
+    const url =
+      `https://fonts.googleapis.com/css?family=` +
+      `${encodeURIComponent(fam.family).replace(/%20/g, "+")}:${fam.variants.join(",")}`;
+    const css = await (await get(url, fam.family)).text();
+    const faces = [...css.matchAll(re)];
+    if (faces.length !== fam.variants.length) {
+      throw new Error(
+        `${fam.family}: ${fam.variants.length}개를 기대했는데 ${faces.length}개를 찾았습니다.`
+      );
+    }
+    for (const [, style, weight, src] of faces) {
+      const name = `${slug(fam.family)}-${weight}${style === "italic" ? "-italic" : ""}.ttf`;
+      await save(name, src, 0);
+      entries.push({ family: fam.family, weight, style, file: `fonts/${name}` });
+    }
   }
 
   await writeFile(

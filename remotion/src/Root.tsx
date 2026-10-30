@@ -6,6 +6,7 @@ import { PhotoShot, photoShotSchema } from "./shot/PhotoShot";
 import { StoryCard, storyCardSchema } from "./story/StoryCard";
 import { WeddingPhoto, weddingPhotoSchema } from "./wedding/WeddingPhoto";
 import { STARLINE_DURATION, StarlineSystem } from "./starline/StarlineSystem";
+import { HORROR_DURATION, SawHorror, sawHorrorSchema } from "./horror/SawHorror";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -86,6 +87,24 @@ export const RemotionRoot: React.FC = () => {
         fps={FPS}
         width={1920}
         height={1080}
+      />
+
+      {/* 할로윈 호러 테마파크 컨셉 — 교수님 톱질 컷, 5초, 효과음·배경음 */}
+      <Composition
+        id="SawHorror"
+        component={SawHorror}
+        durationInFrames={HORROR_DURATION}
+        fps={FPS}
+        width={1920}
+        height={1080}
+        schema={sawHorrorSchema}
+        defaultProps={{
+          closeSrc: "horror/close.webp",
+          profSrc: "horror/prof.webp",
+          sign1: "BONE",
+          sign2: "CITY",
+          subline: "HALLOWEEN NIGHT",
+        }}
       />
     </>
   );

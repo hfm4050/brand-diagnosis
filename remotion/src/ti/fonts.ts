@@ -10,6 +10,8 @@ import { FONT_FILES } from "./font-manifest";
 export const KR = "'Nanum Myeongjo', 'Apple SD Gothic Neo', serif";
 /** 라틴 — Bodoni Moda. 디돈. 키커와 versus에만 쓴다. */
 export const LATIN = "'Bodoni Moda', Georgia, serif";
+/** 호러 테마파크 간판 — Creepster. 라틴 전용. */
+export const CREEPY = "'Creepster', 'Gothic A1', fantasy";
 /** 볼드 고딕 — Gothic A1. 스타라인 카드처럼 정보가 많은 화면용. */
 export const GOTHIC = "'Gothic A1', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
 
